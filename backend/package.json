@@ -13,6 +13,9 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "dev": "nodemon src/shared/infra/app.js"
+    "dev": "nodemon src/shared/infra/app.js",
+    "create:table": "knex migrate:make",
+    "run:table": "knex migrate:latest",
+    "rollback:table": "knex migrate:rollback"
   }
 }
