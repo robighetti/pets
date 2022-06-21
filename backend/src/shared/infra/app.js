@@ -1,6 +1,11 @@
 require('dotenv').config();
 
 const express = require('express');
+const Youch = require('youch');
+
+const { errors } = require('celebrate');
+
+require('express-async-errors');
 
 const routes = require('../infra/routes');
 
@@ -12,19 +17,16 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use((request, response, next) => {
-  const error = new Error('Not found');
+app.use(errors());
 
-  error.status = 404;
-  next(error);
-});
+//controla o erro
+app.use(async (error, request, response, next) => {
+  const errors = await new Youch(error, request).toJSON();
 
-app.use((error, request, response, next) => {
-  response.status(error.status || 500);
-  response.json({
+  return response.status(errors.error.status).json({
     error: {
-      statusCode: error.status,
-      message: error.message,
+      code: errors.error.status,
+      message: errors.error.message,
     },
   });
 });
