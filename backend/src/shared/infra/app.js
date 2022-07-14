@@ -23,9 +23,9 @@ app.use(errors());
 app.use(async (error, request, response, next) => {
   const errors = await new Youch(error, request).toJSON();
 
-  return response.status(errors.error.status).json({
+  return response.status(errors.error.status || 500).json({
     error: {
-      code: errors.error.status,
+      code: errors.error.status || 500,
       message: errors.error.message,
     },
   });
