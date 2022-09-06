@@ -3,9 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   grid-area: CT;
 
-  background: rgba(13, 13, 13, 0.5);
+  background: ${({ theme }) => theme.content};
 
-  h1 {
-    color: #f2f2f2;
-  }
+  color: ${({ theme }) => theme.text};
 `;
