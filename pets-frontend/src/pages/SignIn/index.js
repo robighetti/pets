@@ -1,4 +1,5 @@
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import logo from '../../assets/logo.png';
 
@@ -33,10 +34,10 @@ export const SignIn = () => {
           <a href="forgot">Esqueci minha senha</a>
         </form>
 
-        <a href="sign-up">
+        <Link to="/sign-up">
           <FiLogIn />
           Crie sua conta
-        </a>
+        </Link>
       </Content>
 
       <Background />
