@@ -9,7 +9,7 @@ exports.up = function (knex) {
     table.text('email').notNullable().unique();
     table.text('whatsapp').notNullable();
     table.text('password').notNullable();
-    table.text('cep').notNullable();
+    table.text('cep');
     table.text('address');
     table.text('city');
     table.text('neighborhood');

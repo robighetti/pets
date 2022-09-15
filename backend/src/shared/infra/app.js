@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const Youch = require('youch');
+const cors = require('cors');
 
 const { errors } = require('celebrate');
 
@@ -14,6 +15,8 @@ const app = express();
 const port = 3333;
 
 app.use(express.json());
+
+app.use(cors({ origin: '*' }));
 
 app.use(routes);
 
