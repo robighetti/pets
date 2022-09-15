@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { Tooltip } from '../../tooltip/Tooltip';
+
 export const Container = styled.div`
   background: ${({ theme }) => theme.primary_light};
   border-radius: 8px;
@@ -18,6 +20,12 @@ export const Container = styled.div`
   svg {
     margin-right: 16px;
   }
+
+  ${props =>
+    props.isErrored &&
+    css`
+      border-color: ${propsTheme => propsTheme.theme.error_title};
+    `}
 
   ${props =>
     props.isFocused &&
@@ -41,6 +49,23 @@ export const Container = styled.div`
 
     &::placeholder {
       color: ${({ theme }) => theme.dark_gray};
+    }
+  }
+`;
+
+export const Error = styled(Tooltip)`
+  margin-left: 16px;
+  height: 20px;
+
+  svg {
+    margin: 0;
+  }
+
+  span {
+    background: ${({ theme }) => theme.error_title};
+
+    &::before {
+      border-color: ${({ theme }) => theme.error_title} transparent;
     }
   }
 `;
