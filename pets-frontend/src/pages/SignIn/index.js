@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 
@@ -13,27 +13,41 @@ import getValidationErrors from '../../shared/utils/getValidationErrors';
 
 import { Input, Button } from '../../shared/components';
 
+import { useAuth } from '../../shared/context/AuthContext';
+
 import { Container, Content, Background } from './styles';
 
 export const SignIn = () => {
   const formRef = useRef(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = useCallback(async data => {
-    try {
-      formRef.current.setErrors({});
+  const { signIn } = useAuth();
 
-      const schema = Yup.object().shape({
-        email: Yup.string().email().required('Email é obrigatório!'),
-        password: Yup.string().required('Senha é obrigatória!'),
-      });
+  const handleSubmit = useCallback(
+    async data => {
+      try {
+        formRef.current.setErrors({});
 
-      await schema.validate(data, { abortEarly: false });
-    } catch (err) {
-      const error = getValidationErrors(err);
+        const schema = Yup.object().shape({
+          email: Yup.string().email().required('Email é obrigatório!'),
+          password: Yup.string().required('Senha é obrigatória!'),
+        });
 
-      formRef.current.setErrors(error);
-    }
-  }, []);
+        await schema.validate(data, { abortEarly: false });
+
+        const { email, password } = data;
+
+        await signIn({ email, password });
+
+        navigate('/home');
+      } catch (err) {
+        const error = getValidationErrors(err);
+
+        formRef.current.setErrors(error);
+      }
+    },
+    [signIn, navigate]
+  );
   return (
     <Container>
       <Content>

@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import { FiMail, FiLock, FiArrowLeft, FiEdit } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
 
@@ -12,12 +12,13 @@ import getValidationErrors from '../../shared/utils/getValidationErrors';
 
 import { Input, Button } from '../../shared/components';
 
-import { api } from '../../shared/services';
+import { createPerson } from '../../api/petsApi';
 
 import { Container, Content, Background } from './styles';
 
 export const SignUp = () => {
   const formRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSubmit = useCallback(async data => {
     try {
@@ -33,6 +34,10 @@ export const SignUp = () => {
       });
 
       await schema.validate(data, { abortEarly: false });
+
+      await createPerson(data);
+
+      navigate('/');
     } catch (err) {
       const errors = getValidationErrors(err);
 

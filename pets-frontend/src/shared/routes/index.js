@@ -1,7 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { SignIn, SignUp } from '../../pages';
+import { SignIn, SignUp, Home } from '../../pages';
 
+import { PrivateRoutes } from './PrivateRoutes';
 import { Layout } from '../components';
 
 export const AppRoutes = () => {
@@ -10,7 +11,16 @@ export const AppRoutes = () => {
       <Route path="/" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
 
-      <Route path="/layout" element={<Layout />} />
+      <Route element={<PrivateRoutes />}>
+        <Route
+          path="/home"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+      </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
