@@ -10,6 +10,12 @@ class PersonsRepository {
       trx('persons').insert(payload).returning('id')
     );
   }
+
+  async saveTokenInDb(payload) {
+    return connection.transaction(async trx =>
+      trx('persons_token').insert(payload).returning('token')
+    );
+  }
 }
 
 module.exports = PersonsRepository;
