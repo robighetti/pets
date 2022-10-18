@@ -33,7 +33,7 @@ class ForgotPasswordService {
     const message = forgotPassword(user.name, token);
 
     await this.mailProvider.sendMail({
-      to: 'robighetti@gmail.com',
+      to: email,
       subject: 'Esqueci minha senha [PETS]',
       template: message,
     });

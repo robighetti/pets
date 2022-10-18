@@ -16,6 +16,31 @@ class PersonsRepository {
       trx('persons_token').insert(payload).returning('token')
     );
   }
+
+  async getTokenUser(token) {
+    return connection('persons_token')
+      .join('persons', 'persons.id', 'persons_token.person_id')
+      .where({
+        token,
+      })
+      .first();
+  }
+
+  async updatePasswordAndDeleteToken(payload) {
+    return connection.transaction(async trx => {
+      await trx('persons')
+        .update({
+          password: payload.password,
+        })
+        .where({
+          id: payload.personId,
+        });
+
+      await trx('persons_token').del().where({
+        person_id: payload.personId,
+      });
+    });
+  }
 }
 
 module.exports = PersonsRepository;
