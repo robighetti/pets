@@ -12,6 +12,8 @@ import getValidationErrors from '../../shared/utils/getValidationErrors';
 
 import { Input, Button } from '../../shared/components';
 
+import { useToast } from '../../shared/context/ToastContext';
+
 import { createPerson } from '../../api/petsApi';
 
 import { Container, Content, Background } from './styles';
@@ -20,33 +22,50 @@ export const SignUp = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback(async data => {
-    try {
-      formRef.current.setErrors({});
+  const { addToast } = useToast();
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome Obrigatório!'),
-        email: Yup.string().email().required('Email é obrigatório!'),
-        whatsapp: Yup.string()
-          .min(13, 'Precisa ser no minimo 13 caracteres')
-          .required('Whatsapp é obrigatório!'),
-        password: Yup.string().min(6, 'Minimo de 6 caracteres!'),
-      });
+  const handleSubmit = useCallback(
+    async data => {
+      try {
+        formRef.current.setErrors({});
 
-      await schema.validate(data, { abortEarly: false });
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome Obrigatório!'),
+          email: Yup.string().email().required('Email é obrigatório!'),
+          whatsapp: Yup.string()
+            .min(11, 'Precisa ser no minimo 13 caracteres')
+            .required('Whatsapp é obrigatório!'),
+          password: Yup.string().min(6, 'Minimo de 6 caracteres!'),
+        });
 
-      await createPerson(data);
+        await schema.validate(data, { abortEarly: false });
 
-      navigate('/');
-    } catch (err) {
-      const errors = getValidationErrors(err);
+        await createPerson(data);
 
-      formRef.current.setErrors(errors);
-    }
+        addToast({
+          type: 'success',
+          title: 'Usuário criado com sucesso',
+          description: 'Cadastro realizado, pode logar no sistema',
+        });
 
-    //const response = await api.post('/persons', data);
-    //console.log(response);
-  }, []);
+        navigate('/');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current.setErrors(errors);
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro ao cadastrar',
+          description: 'Erro no cadastro, verifique seus dados',
+        });
+      }
+    },
+    [navigate, addToast]
+  );
 
   return (
     <Container>

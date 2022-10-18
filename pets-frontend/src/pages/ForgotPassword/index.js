@@ -1,6 +1,6 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { FiMail } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
@@ -11,37 +11,46 @@ import logo from '../../assets/logo.png';
 
 import getValidationErrors from '../../shared/utils/getValidationErrors';
 
-import { Input, Button } from '../../shared/components';
+import { Input, Button, Loader } from '../../shared/components';
 
-import { useAuth } from '../../shared/context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
+
+import { forgotPassword } from '../../api/petsApi';
 
 import { Container, Content, Background } from './styles';
 
-export const SignIn = () => {
+export const ForgotPassword = () => {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const { addToast } = useToast();
 
-  const { signIn } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback(
     async data => {
       try {
         formRef.current.setErrors({});
+        setIsLoading(true);
 
         const schema = Yup.object().shape({
           email: Yup.string().email().required('Email é obrigatório!'),
-          password: Yup.string().required('Senha é obrigatória!'),
         });
 
         await schema.validate(data, { abortEarly: false });
 
-        const { email, password } = data;
+        const { email } = data;
 
-        await signIn({ email, password });
+        await forgotPassword(email);
 
-        navigate('/home');
+        addToast({
+          type: 'success',
+          title: 'Token Enviado',
+          description: 'Por favor verifique seu email',
+        });
+
+        setIsLoading(false);
+
+        navigate('/reset-password');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const error = getValidationErrors(err);
@@ -57,7 +66,7 @@ export const SignIn = () => {
         });
       }
     },
-    [signIn, navigate, addToast]
+    [navigate, addToast]
   );
   return (
     <Container>
@@ -65,7 +74,7 @@ export const SignIn = () => {
         <img src={logo} alt="Pets" />
 
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu logon</h1>
+          <h1>Esqueci minha senha</h1>
 
           <Input
             name="email"
@@ -73,22 +82,11 @@ export const SignIn = () => {
             type="email"
             placeholder="Digite seu email"
           />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Digite sua senha"
-          />
 
-          <Button type="submit">Entrar</Button>
+          {isLoading ? <Loader /> : <Button type="submit">Enviar Token</Button>}
 
-          <Link to="/forgot-password">Esqueci minha senha</Link>
+          <Link to="/">Voltar</Link>
         </Form>
-
-        <Link to="/sign-up">
-          <FiLogIn />
-          Crie sua conta
-        </Link>
       </Content>
 
       <Background />

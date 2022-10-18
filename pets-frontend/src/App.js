@@ -6,19 +6,19 @@ import colors from './shared/styles/themes/colors';
 
 import { AppRoutes } from './shared/routes';
 
-import { AuthProvider } from './shared/context/AuthContext';
+import { AppProvider } from './shared/context/';
 
 import GlobalStyles from './shared/styles/GlobalStyles';
 
 export const App = () => {
   return (
-    <AuthProvider>
-      <ThemeProvider theme={colors}>
+    <ThemeProvider theme={colors}>
+      <AppProvider>
         <BrowserRouter>
           <GlobalStyles />
           <AppRoutes />
         </BrowserRouter>
-      </ThemeProvider>
-    </AuthProvider>
+      </AppProvider>
+    </ThemeProvider>
   );
 };

@@ -17,8 +17,8 @@ export default {
   info_title: '#3172b7',
   info_background: '#ebf8ff',
 
-  warning_title: '#F2E205',
-  warning_background: '#F9FFD1',
+  warning_title: '#FFD700',
+  warning_background: '#F5F5DC',
 
   error_title: '#c53030',
   error_background: '#fddede',
