@@ -6,6 +6,8 @@ const cors = require('cors');
 
 const { errors } = require('celebrate');
 
+const uploadConfig = require('../../config/upload');
+
 require('express-async-errors');
 
 const routes = require('../infra/routes');
@@ -15,6 +17,8 @@ const app = express();
 const port = 3333;
 
 app.use(express.json());
+
+app.use('/files', express.static(uploadConfig.directory));
 
 app.use(cors({ origin: '*' }));
 

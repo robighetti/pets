@@ -5,6 +5,8 @@ const sessionsRoutes = require('../../../modules/persons/infra/routes/sessions.r
 const forgotRoutes = require('../../../modules/persons/infra/routes/forgot.routes');
 const resetPasswordRoutes = require('../../../modules/persons/infra/routes/resetPassword.routes');
 
+const ensureAuthenticated = require('../../../modules/persons/middleware/ensure.authenticated');
+
 const routes = Router();
 
 routes.use('/persons', personsRoutes);
@@ -15,8 +17,6 @@ routes.use('/forgot', forgotRoutes);
 
 routes.use('/reset-password', resetPasswordRoutes);
 
-//routes.use('/pets');
-
-//routes.use('/transactions');
+routes.use(ensureAuthenticated);
 
 module.exports = routes;

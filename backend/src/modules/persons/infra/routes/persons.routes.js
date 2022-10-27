@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const multer = require('multer');
 
 const { celebrate, Segments, Joi } = require('celebrate');
 
@@ -7,6 +8,12 @@ const PersonsController = require('../controllers/PersonsController');
 const {
   verifyIfEmailAlreadyExists,
 } = require('../../middleware/persons.middleware');
+
+const ensureAuthenticated = require('../../middleware/ensure.authenticated');
+
+const uploadConfig = require('../../../../config/upload');
+
+const upload = multer(uploadConfig);
 
 const personsRoutes = Router();
 const personsController = new PersonsController();
@@ -25,10 +32,11 @@ personsRoutes.post(
   personsController.createPersons
 );
 
-personsRoutes.get('/', personsController.getAllPersons);
-
-personsRoutes.put('/', personsController.updatePersons);
-
-personsRoutes.delete('/', personsController.deletePersons);
+personsRoutes.patch(
+  '/avatar',
+  ensureAuthenticated,
+  upload.single('avatar'),
+  personsController.updatePersonAvatar
+);
 
 module.exports = personsRoutes;

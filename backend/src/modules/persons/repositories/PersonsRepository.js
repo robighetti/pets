@@ -41,6 +41,17 @@ class PersonsRepository {
       });
     });
   }
+
+  async getPersonById(personId) {
+    return connection('persons').where({ id: personId }).first();
+  }
+
+  async updatePerson(payload) {
+    return connection('persons')
+      .update(payload)
+      .where({ id: payload.id })
+      .returning('*');
+  }
 }
 
 module.exports = PersonsRepository;

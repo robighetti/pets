@@ -1,6 +1,7 @@
 const CreatePersonsService = require('../../services/CreatePersonsService');
 const ForgotPasswordService = require('../../services/ForgotPasswordService');
 const ResetPasswordService = require('../../services/ResetPasswordService');
+const UpdatePersonAvatar = require('../../services/UpdatePersonAvatar');
 
 const PersonsRepository = require('../../repositories/PersonsRepository');
 
@@ -53,16 +54,15 @@ class PersonsController {
     return response.json(result);
   }
 
-  async getAllPersons(request, response) {
-    return response.json({ getAll: true });
-  }
+  async updatePersonAvatar(request, response) {
+    const updateAvatar = new UpdatePersonAvatar(personsRepository);
 
-  async updatePersons(request, response) {
-    return response.json({ update: true });
-  }
+    const updatedAvatar = await updateAvatar.execute({
+      personId: request.person.id,
+      avatarFileName: request.file.filename,
+    });
 
-  async deletePersons(request, response) {
-    return response.json({ delete: true });
+    return response.json(updatedAvatar);
   }
 }
 
