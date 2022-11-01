@@ -4,12 +4,12 @@ import { MainHeader } from '../MainHeader';
 
 import { GridLayout } from './styles';
 
-export const Layout = () => {
+export const Layout = ({ children }) => {
   return (
     <GridLayout>
       <Aside />
       <MainHeader />
-      <Content />
+      <Content>{children}</Content>
     </GridLayout>
   );
 };

@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  grid-area: AS;
+  grid-area: CT;
 
-  background: ${({ theme }) => theme.background};
+  background: ${({ theme }) => theme.content};
+
   color: ${({ theme }) => theme.text};
+
+  padding: 16px;
 `;

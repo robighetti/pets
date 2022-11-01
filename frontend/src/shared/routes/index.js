@@ -6,6 +6,8 @@ import {
   Home,
   ForgotPassword,
   ResetPassword,
+  Pets,
+  FindPets,
 } from '../../pages';
 
 import { PrivateRoutes } from './PrivateRoutes';
@@ -25,6 +27,24 @@ export const AppRoutes = () => {
           element={
             <Layout>
               <Home />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/pets"
+          element={
+            <Layout>
+              <Pets />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/find-pets"
+          element={
+            <Layout>
+              <FindPets />
             </Layout>
           }
         />
