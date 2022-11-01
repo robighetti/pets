@@ -10,7 +10,6 @@ export const Container = styled.button`
   color: ${({ theme }) => theme.background};
   font-weight: bold;
   font-size: 18px;
-  margin-top: 16px;
 
   transition: all 0.3s;
 

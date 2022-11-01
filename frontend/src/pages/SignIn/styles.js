@@ -33,6 +33,10 @@ export const Content = styled.div`
       margin-bottom: 16px;
     }
 
+    > button {
+      margin-top: 16px;
+    }
+
     a {
       color: ${({ theme }) => theme.primary};
       display: block;
