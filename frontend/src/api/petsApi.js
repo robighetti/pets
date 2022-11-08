@@ -44,4 +44,14 @@ const resetPassword = async ({ token, password }) => {
   }
 };
 
-export { login, createPerson, forgotPassword, resetPassword };
+const getPets = async () => {
+  try {
+    const response = await api.get('/pets');
+
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export { login, createPerson, forgotPassword, resetPassword, getPets };
