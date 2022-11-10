@@ -23,8 +23,9 @@ const AuthProvider = ({ children }) => {
 
     const { token, person } = response;
 
-    localStorage.setItem('@pets', JSON.stringify({ token, person }));
     setData(person);
+
+    localStorage.setItem('@pets', JSON.stringify({ token, person }));
   }, []);
 
   const signOut = useCallback(() => {

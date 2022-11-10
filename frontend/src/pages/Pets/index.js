@@ -10,13 +10,16 @@ import {
   Paper,
 } from '@mui/material';
 
+import { FiEdit, FiEye, FiTrash2 } from 'react-icons/fi';
+
 import { ContentBaseLayout } from '../../shared/layouts/ContentBaseLayout';
 
 import { ListToolbar } from '../../shared/components';
 
 import { getPets } from '../../api/petsApi';
+import { environment } from '../../shared/environments';
 
-import { Container } from './styles';
+import { Container, ActionsButton, ImagePet } from './styles';
 
 export const Pets = () => {
   const [pets, setPets] = useState([]);
@@ -59,25 +62,50 @@ export const Pets = () => {
           <Table sx={{ minWidth: '100%' }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell># ID</TableCell>
-                <TableCell align="right">Raça</TableCell>
-                <TableCell align="right">Porte</TableCell>
-                <TableCell align="right">Tipo</TableCell>
-                <TableCell align="right">Castrado ?</TableCell>
-                <TableCell align="right">Idade</TableCell>
-                <TableCell align="right">Nome</TableCell>
+                <TableCell align="left">Ações</TableCell>
+                <TableCell align="left">#</TableCell>
+                <TableCell align="left">Raça</TableCell>
+                <TableCell align="left">Porte</TableCell>
+                <TableCell align="left">Tipo</TableCell>
+                <TableCell align="left">Castrado ?</TableCell>
+                <TableCell align="left">Idade</TableCell>
+                <TableCell align="left">Nome</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {pets.map(pet => (
                 <TableRow key={pet.id}>
-                  <TableCell>{pet.id}</TableCell>
-                  <TableCell align="right">{pet.race}</TableCell>
-                  <TableCell align="right">{pet.port}</TableCell>
-                  <TableCell align="right">{pet.type}</TableCell>
-                  <TableCell align="right">{pet.castrated}</TableCell>
-                  <TableCell align="right">{pet.age}</TableCell>
-                  <TableCell align="right">{pet.name}</TableCell>
+                  <TableCell align="left">
+                    <ActionsButton>
+                      <button>
+                        <FiEdit />
+                      </button>
+
+                      <button>
+                        <FiEye />
+                      </button>
+
+                      <button>
+                        <FiTrash2 />
+                      </button>
+                    </ActionsButton>
+                  </TableCell>
+                  <TableCell align="left">
+                    <ImagePet
+                      src={
+                        pet.picture
+                          ? environment.API_URL + '/files/' + pet.picture
+                          : `https://ui-avatars.com/api/?font-size=0.33&background=BF472C&color=fff&name=${pet?.name}`
+                      }
+                      alt=""
+                    />
+                  </TableCell>
+                  <TableCell align="left">{pet.race}</TableCell>
+                  <TableCell align="left">{pet.port}</TableCell>
+                  <TableCell align="left">{pet.type}</TableCell>
+                  <TableCell align="left">{pet.castrated}</TableCell>
+                  <TableCell align="left">{pet.age}</TableCell>
+                  <TableCell align="left">{pet.name}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

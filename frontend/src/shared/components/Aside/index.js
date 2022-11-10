@@ -1,3 +1,5 @@
+import { useEffect, useCallback, useState } from 'react';
+
 import { MdPets, MdOutlineSearch, MdLogout, MdHome } from 'react-icons/md';
 
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +22,21 @@ import {
 export const Aside = () => {
   const navigate = useNavigate();
 
-  const { signOut, payload } = useAuth();
+  const [person, setPerson] = useState();
 
-  const { person } = payload;
+  const getUserDetails = useCallback(async () => {
+    const personData = JSON.parse(
+      localStorage.getItem(environment.APP_NAME)
+    ).person;
+
+    setPerson(personData);
+  }, []);
+
+  const { signOut } = useAuth();
+
+  useEffect(() => {
+    getUserDetails();
+  }, [getUserDetails]);
 
   return (
     <Container>
@@ -38,9 +52,9 @@ export const Aside = () => {
           />
 
           <ProfileInfo>
-            <h1>{person?.name}</h1>
+            <h1>{person?.name || 'Nome'}</h1>
 
-            <span>{person?.email}</span>
+            <span>{person?.email || 'Email'}</span>
           </ProfileInfo>
         </ProfileContent>
       </Header>
