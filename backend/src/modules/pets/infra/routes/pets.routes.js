@@ -1,10 +1,14 @@
 const { Router } = require('express');
 const { celebrate, Segments, Joi } = require('celebrate');
+const multer = require('multer');
 
 const PetsController = require('../controllers/PetsController');
+const uploadConfig = require('../../../../config/upload');
 
 const petsRoutes = Router();
 const petsController = new PetsController();
+
+const upload = multer(uploadConfig);
 
 petsRoutes.post(
   '/',
@@ -21,9 +25,36 @@ petsRoutes.post(
   petsController.createPets
 );
 
-petsRoutes.put('/:id', petsController.updatePets);
+petsRoutes.put(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required('Id is required'),
+    },
+  }),
+  petsController.updatePets
+);
 
-petsRoutes.delete('/:id', petsController.deletePets);
+petsRoutes.patch(
+  '/:id/picture',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required('Id is required'),
+    },
+  }),
+  upload.single('picture'),
+  petsController.updatePetsPicture
+);
+
+petsRoutes.delete(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required('Id is required'),
+    },
+  }),
+  petsController.deletePets
+);
 
 petsRoutes.get('/', petsController.getAllPets);
 

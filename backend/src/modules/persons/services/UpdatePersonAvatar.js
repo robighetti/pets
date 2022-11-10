@@ -14,8 +14,6 @@ class UpdatePersonAvatar {
     const person = await this.personsRepository.getPersonById(personId);
     if (!person) throw new AppError('Person not found');
 
-    console.log(person);
-
     if (person.avatar) {
       const personAvatarFilePath = path.join(
         uploadConfig.directory,

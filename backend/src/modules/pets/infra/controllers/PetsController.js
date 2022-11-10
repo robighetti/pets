@@ -3,6 +3,9 @@ const PetsRepository = require('../../repositories/PetsRepository');
 const CreateNewPetService = require('../../services/CreateNewPetService');
 const GetAllPetsService = require('../../services/GetAllPetsService');
 const GetOnePetService = require('../../services/GetOnePetService');
+const UpdatePetService = require('../../services/UpdatePetService');
+const DeletePetService = require('../../services/DeletePetService');
+const UpdatePetsPictureService = require('../../services/UpdatePetsPictureService');
 
 const petsRepository = new PetsRepository();
 
@@ -25,11 +28,46 @@ class PetsController {
   }
 
   async updatePets(request, response) {
-    return response.json({ ok: 'updatePets' });
+    const { id } = request.params;
+
+    const payload = {
+      id,
+      ...request.body,
+    };
+
+    const updatePet = new UpdatePetService(petsRepository);
+
+    const petUpdated = await updatePet.execute(payload);
+
+    return response.json(petUpdated);
+  }
+
+  async updatePetsPicture(request, response) {
+    const updatePetService = new UpdatePetsPictureService(petsRepository);
+
+    const { id } = request.params;
+
+    const updatedPetPicture = await updatePetService.execute({
+      id,
+      filename: request.file.filename,
+    });
+
+    return response.json(updatedPetPicture);
   }
 
   async deletePets(request, response) {
-    return response.json({ ok: 'deletePets' });
+    const { id } = request.params;
+
+    const deletePet = new DeletePetService(petsRepository);
+
+    await deletePet.execute(id);
+
+    return response.json({
+      pet: {
+        id,
+        deleted: true,
+      },
+    });
   }
 
   async getAllPets(request, response) {
