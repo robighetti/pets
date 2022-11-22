@@ -4,4 +4,5 @@ export * from './Home';
 export * from './ForgotPassword';
 export * from './ResetPassword';
 export * from './Pets';
+export * from './Pets/PetsDetails';
 export * from './FindPets';

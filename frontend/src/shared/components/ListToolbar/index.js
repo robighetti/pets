@@ -29,7 +29,7 @@ export const ListToolbar = ({ handleSearch, handleNew }) => {
         </Button>
       </Form>
 
-      <Button type="button" style={buttonStyles} onClick={handleNew}>
+      <Button type="button" style={buttonStyles} onClick={() => handleNew('new', 1)}>
         <MdAdd size={24} style={{ marginRight: '16px' }} /> Novo
       </Button>
     </Container>

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import {
   TableContainer,
   Table,
@@ -24,13 +26,15 @@ import { Container, ActionsButton, ImagePet } from './styles';
 export const Pets = () => {
   const [pets, setPets] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleSearch = useCallback(() => {
     console.log('PETS - handleSearch');
   }, []);
 
-  const handleNew = useCallback(() => {
-    console.log('PETS - handleNew');
-  }, []);
+  const handleDetails = useCallback((id, option) => {
+    navigate(`/pets/details/${id}`, { state: { option } })
+  }, [navigate]);
 
   const getAllPets = useCallback(async () => {
     const result = await getPets();
@@ -53,7 +57,7 @@ export const Pets = () => {
     <ContentBaseLayout
       title="Cadastro de pets"
       toolbar={
-        <ListToolbar handleSearch={handleSearch} handleNew={handleNew} />
+        <ListToolbar handleSearch={handleSearch} handleNew={handleDetails} />
       }
     >
       <Container>
@@ -77,11 +81,11 @@ export const Pets = () => {
                 <TableRow key={pet.id}>
                   <TableCell align="left">
                     <ActionsButton>
-                      <button>
+                      <button type="button" onClick={() => handleDetails(pet.id, 2)}>
                         <FiEdit />
                       </button>
 
-                      <button>
+                      <button type="button" onClick={() => handleDetails(pet.id, 4)}>
                         <FiEye />
                       </button>
 
