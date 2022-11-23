@@ -46,8 +46,6 @@ export const PetsDetails = () => {
 
       await schema.validate(data, { abortEarly: false })
 
-      console.log(option)
-
       let pet;
       switch (option) {
         case 1: {
@@ -65,8 +63,10 @@ export const PetsDetails = () => {
         default:
       }
 
+      console.log(pet)
+
       if (petPicturePayload) {
-        await updateAvatarPet({ id: pet.id, data: petPicturePayload })
+        await updateAvatarPet({ id: option === 'new' ? pet.id : id, data: petPicturePayload })
       }
 
       addToast({
