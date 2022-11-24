@@ -8,4 +8,6 @@ export const Container = styled.div`
   color: ${({ theme }) => theme.text};
 
   padding: 16px;
+
+  position: relative;
 `;

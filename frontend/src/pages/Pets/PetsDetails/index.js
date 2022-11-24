@@ -12,6 +12,7 @@ import { useToast } from '../../../shared/context/ToastContext'
 import { createPet, updateAvatarPet, getPetDetails, editPet } from '../../../api/petsApi'
 
 import { Container, FormContent, PetContainer } from './styles';
+import { environment } from '../../../shared/environments';
 
 export const PetsDetails = () => {
   const formRef = useRef(null);
@@ -63,10 +64,8 @@ export const PetsDetails = () => {
         default:
       }
 
-      console.log(pet)
-
       if (petPicturePayload) {
-        await updateAvatarPet({ id: option === 'new' ? pet.id : id, data: petPicturePayload })
+        await updateAvatarPet({ id: option === 1 ? pet.id : id, data: petPicturePayload })
       }
 
       addToast({
@@ -90,7 +89,7 @@ export const PetsDetails = () => {
         description: 'Erro no cadastro, verifique seus dados',
       });
     }
-  }, [addToast, petPicturePayload, navigate]);
+  }, [addToast, petPicturePayload, navigate, id, option]);
 
   const handlePictureChange = useCallback((event) => {
     setPetPicture(URL.createObjectURL(event.target.files[0]))
@@ -102,6 +101,8 @@ export const PetsDetails = () => {
 
   const handleGetPetDetails = useCallback(async () => {
     const result = await getPetDetails(id)
+
+    setPetPicture(environment.API_URL + '/files/' + result.picture);
 
     Object.assign(result, {
       castrated: result.castrated ? { value: true, label: 'Sim' } : { value: false, label: 'Não' }
@@ -128,6 +129,7 @@ export const PetsDetails = () => {
               icon={FiEdit}
               type="text"
               placeholder="Digite o nome do seu pet"
+              disabled={option === 4 ? true : false}
             />
 
             <Input
@@ -135,6 +137,7 @@ export const PetsDetails = () => {
               icon={FiEdit}
               type="number"
               placeholder="Digite a idade do seu pet"
+              disabled={option === 4 ? true : false}
             />
 
             <Input
@@ -142,19 +145,35 @@ export const PetsDetails = () => {
               icon={FiEdit}
               type="text"
               placeholder="Digite a raça do seu pet"
+              disabled={option === 4 ? true : false}
             />
 
-            <Select name="castrated" placeholder="Castrado ?"
-              options={[
-                { value: true, label: 'Sim' },
-                { value: false, label: 'Não' }
-              ]} />
+            {option !== 4 ? (
+              <Select name="castrated" placeholder="Castrado ?"
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' }
+                ]}
+                disabled={option === 4 ? true : false}
+              />
+            ) : (
+              <Input
+                name="castrated"
+                icon={FiEdit}
+                type="text"
+                value={pet?.castrated.value ? 'Castrado' : 'Não Castrado'}
+                placeholder="Digite a raça do seu pet"
+                disabled={option === 4 ? true : false}
+              />
+            )}
+
 
             <Input
               name="port"
               icon={FiEdit}
               type="text"
               placeholder="Digite o porte do seu pet"
+              disabled={option === 4 ? true : false}
             />
 
             <Input
@@ -162,6 +181,7 @@ export const PetsDetails = () => {
               icon={FiEdit}
               type="text"
               placeholder="Digite o tipo do seu pet"
+              disabled={option === 4 ? true : false}
             />
 
             <Button type="submit" style={{ marginTop: '16px' }}>Salvar</Button>

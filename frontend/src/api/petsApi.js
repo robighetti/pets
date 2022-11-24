@@ -94,6 +94,16 @@ const editPet = async (payload) => {
   }
 }
 
+const deletePet = async (petId) => {
+  try {
+    const response = await api.delete(`/pets/${petId}`);
+
+    return response.data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
 export {
   login,
   createPerson,
@@ -103,5 +113,6 @@ export {
   createPet,
   updateAvatarPet,
   getPetDetails,
-  editPet
+  editPet,
+  deletePet
 };

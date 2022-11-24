@@ -16,17 +16,24 @@ import { FiEdit, FiEye, FiTrash2 } from 'react-icons/fi';
 
 import { ContentBaseLayout } from '../../shared/layouts/ContentBaseLayout';
 
-import { ListToolbar } from '../../shared/components';
+import { ListToolbar, DeleteModal } from '../../shared/components';
 
-import { getPets } from '../../api/petsApi';
+import { getPets, deletePet } from '../../api/petsApi';
 import { environment } from '../../shared/environments';
+import { useToast } from '../../shared/context/ToastContext'
 
 import { Container, ActionsButton, ImagePet } from './styles';
 
 export const Pets = () => {
+  const { addToast } = useToast()
+
   const [pets, setPets] = useState([]);
+  const [petId, setPetId] = useState(null)
+  const [refresh, setRefresh] = useState(false)
 
   const navigate = useNavigate();
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
 
   const handleSearch = useCallback(() => {
     console.log('PETS - handleSearch');
@@ -47,11 +54,35 @@ export const Pets = () => {
     });
 
     setPets(formatedResult);
+    setRefresh(false)
   }, []);
+
+  const handleDeletePet = useCallback(async () => {
+    await deletePet(petId)
+
+    setRefresh(true)
+    setPetId(null)
+    setOpenDeleteModal(false)
+
+    addToast({
+      type: 'success',
+      title: 'Pet Excluído',
+      description: "Pet excluído com sucesso"
+    })
+  }, [petId, addToast])
+
+  const handleCancelDelete = useCallback(() => {
+    setOpenDeleteModal(false)
+  }, [])
+
+  const handleOpenModal = useCallback((id) => {
+    setPetId(id)
+    setOpenDeleteModal(true)
+  }, [])
 
   useEffect(() => {
     getAllPets();
-  }, [getAllPets]);
+  }, [getAllPets, refresh]);
 
   return (
     <ContentBaseLayout
@@ -62,6 +93,15 @@ export const Pets = () => {
     >
       <Container>
         {/* children */}
+        {openDeleteModal && (
+          <DeleteModal
+            title="Exclusão de Pet"
+            description="O Pet será excluído permanentemente, tem certeza de que deseja continuar ?"
+            handleDelete={handleDeletePet}
+            handleCancel={handleCancelDelete}
+          />
+        )}
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: '100%' }} aria-label="simple table">
             <TableHead>
@@ -89,7 +129,7 @@ export const Pets = () => {
                         <FiEye />
                       </button>
 
-                      <button>
+                      <button onClick={() => handleOpenModal(pet.id)}>
                         <FiTrash2 />
                       </button>
                     </ActionsButton>
