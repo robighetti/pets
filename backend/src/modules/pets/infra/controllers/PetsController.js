@@ -22,6 +22,7 @@ class PetsController {
       port,
       castrated,
       type,
+      person_id_donation: request.person.id
     });
 
     return response.json(pet[0]);

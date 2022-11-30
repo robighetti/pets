@@ -7,7 +7,7 @@ class PersonsRepository {
 
   async createPerson(payload) {
     return connection.transaction(async trx =>
-      trx('persons').insert(payload).returning('id')
+      trx('persons').insert(payload).returning('*')
     );
   }
 
