@@ -8,7 +8,8 @@ import {
   ResetPassword,
   Pets,
   FindPets,
-  PetsDetails
+  PetsDetails,
+  FindDetails
 } from '../../pages';
 
 import { PrivateRoutes } from './PrivateRoutes';
@@ -60,7 +61,16 @@ export const AppRoutes = () => {
         />
       </Route>
 
+      <Route
+        path="/find-pets/details/:id"
+        element={
+          <Layout>
+            <FindDetails />
+          </Layout>
+        }
+      />
+
       <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+    </Routes >
   );
 };

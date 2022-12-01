@@ -1,4 +1,5 @@
 const CreateAdoptionService = require('../../services/CreateAdoptionService');
+const GetAllTransactionsService = require('../../services/GetAllTransactionsService')
 
 const PetsRepository = require('../../../pets/repositories/PetsRepository');
 const TransactionsRepository = require('../../repositories/TransactionsRepository');
@@ -21,6 +22,14 @@ class TransactionsController {
     const adoption = await createAdoption.execute(payload);
 
     return response.json(adoption)
+  }
+
+  async getAllTransactions(_, response) {
+    const getAll = new GetAllTransactionsService(transactionsRepository)
+
+    const transactions = await getAll.execute()
+
+    return response.json(transactions)
   }
 }
 

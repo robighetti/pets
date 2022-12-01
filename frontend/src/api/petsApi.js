@@ -104,6 +104,16 @@ const deletePet = async (petId) => {
   }
 }
 
+const getAllPets = async () => {
+  try {
+    const response = await api.get('/transactions')
+
+    return response.data
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 export {
   login,
   createPerson,
@@ -114,5 +124,6 @@ export {
   updateAvatarPet,
   getPetDetails,
   editPet,
-  deletePet
+  deletePet,
+  getAllPets
 };

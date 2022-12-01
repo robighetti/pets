@@ -15,5 +15,6 @@ transactionsRoutes.post('/adoption',
   , transactionsController.createAdoption);
 
 
+transactionsRoutes.get('/', transactionsController.getAllTransactions)
 
 module.exports = transactionsRoutes;

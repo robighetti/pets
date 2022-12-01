@@ -6,3 +6,4 @@ export * from './ResetPassword';
 export * from './Pets';
 export * from './Pets/PetsDetails';
 export * from './FindPets';
+export * from './FindPets/FindDetails';
