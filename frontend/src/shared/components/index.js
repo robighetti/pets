@@ -8,3 +8,4 @@ export * from './ListAdoptToolbar';
 export * from './FormActions';
 export * from './form/select/Select';
 export * from './DeleteModal'
+export * from './SearchPets'

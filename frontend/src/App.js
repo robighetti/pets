@@ -1,5 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 
+import 'react-perfect-scrollbar/dist/css/styles.css'
+
 import { ThemeProvider } from 'styled-components';
 
 import colors from './shared/styles/themes/colors';
